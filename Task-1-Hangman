@@ -1,0 +1,133 @@
+import random
+
+# TODO: maybe add more words later if people get bored of these 5?? 
+# keeping it simple for now 
+WORD_POOL = ['algorithm', 'robotics', 'database', 'network', 'intelligence']
+
+def display_hangman(bad_guesses):
+    stages = [
+        """
+           --------
+           |      |
+           |      O
+           |     \\|/
+           |      |
+           |     / \\
+           -
+        """,
+        """
+           --------
+           |      |
+           |      O
+           |     \\|/
+           |      |
+           |     / 
+           -
+        """,
+        """
+           --------
+           |      |
+           |      O
+           |     \\|/
+           |      |
+           |      
+           -
+        """,
+        """
+           --------
+           |      |
+           |      O
+           |     \\|
+           |      |
+           |     
+           -
+        """,
+        """
+           --------
+           |      |
+           |      O
+           |      |
+           |      |
+           |     
+           -
+        """,
+        """
+           --------
+           |      |
+           |      O
+           |    
+           |      
+           |     
+           -
+        """,
+        """
+           --------
+           |      |
+           |      
+           |    
+           |      
+           |     
+           -
+        """
+    ]
+    return stages[bad_guesses]
+
+def play_hangman():
+    # pick a random word from our list
+    the_word = random.choice(WORD_POOL).upper()
+    
+    # hidden word progress
+    progress = "_" * len(the_word)
+    is_winner = False
+    
+    # keep track of letters user already tried
+    already_guessed = []
+    
+    # 6 tries total (matches length of stages array - 1)
+    chances_left = 6
+
+    print("Welcome to Tech & AI Hangman!")
+    print(display_hangman(chances_left))
+    print(progress)
+    print("\n")
+
+    # main game loop
+    while not is_winner and chances_left > 0:
+        player_input = input("Please guess a letter: ").upper()
+        
+        # quick check to see if input is valid
+        if len(player_input) == 1 and player_input.isalpha():
+            if player_input in already_guessed:
+                print("You already guessed the letter", player_input)
+            elif player_input not in the_word:
+                print("Nope,", player_input, "is not in the word.")
+                chances_left = chances_left - 1 # decrement tries awkwardly instead of -= for no reason
+                already_guessed.append(player_input)
+            else:
+                print("Yay,", player_input, "is in the word!")
+                already_guessed.append(player_input)
+                
+                # rebuilding string using a list because strings are immutable in python 
+                # (remember this bug from last week )
+                temp_list = list(progress)
+                for i in range(len(the_word)):
+                    if the_word[i] == player_input:
+                        temp_list[i] = player_input
+                progress = "".join(temp_list)
+                
+                if "_" not in progress:
+                    is_winner = True
+        else:
+            print("Invalid input! Just type one single letter please.")
+            
+        print(display_hangman(chances_left))
+        print(progress)
+        print("\n")
+        
+    if is_winner:
+        print("Yoooo you actually won!! Good job!!")
+    else:
+        print("Ahhh bad luck, you ran out of tries. The word was " + the_word + " :(")
+
+if __name__ == "__main__":
+    play_hangman()
