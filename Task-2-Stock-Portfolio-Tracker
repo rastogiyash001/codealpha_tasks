@@ -1,0 +1,56 @@
+#5 fixed stock 
+stocks = {
+    "AAPL": 180,
+    "TSLA": 250,
+    "GOOG": 140,
+    "MSFT": 400,
+    "AMZN": 175
+}
+
+total_investment = 0
+records = []
+
+print("Welcome to Stock Portfolio Tracker!\n")
+print("Available stocks:")
+for s in stocks:
+    print("-", s, ": $", stocks[s])
+print()
+
+while True:
+    stock = input("Enter stock name (or 'done' to finish): ").upper()
+
+    # stop loop 
+    if stock == "DONE":
+        break
+
+    # check if stock exists
+    if stock in stocks:
+        quantity = int(input("Enter quantity: "))
+
+        # total cost
+        cost = stocks[stock] * quantity
+        
+        # add cost to total investment
+        total_investment = total_investment + cost
+
+        line = stock + " - Quantity: " + str(quantity) + " - Cost: $" + str(cost)
+        records.append(line)
+        print("Added", stock, "costing $" + str(cost), "\n")
+    else:
+        print("Stock not in list. Try again.\n")
+
+# print final total on screen
+print("------------------")
+print("Total Investment Value: $" + str(total_investment))
+
+# saving file
+try:
+    file = open("portfolio.txt", "w")
+    file.write("My Stock Portfolio\n------------------\n")
+    for r in records:
+        file.write(r + "\n")
+    file.write("------------------\nTotal Investment: $" + str(total_investment) + "\n")
+    file.close()
+    print("Your portfolio has been saved to portfolio.txt!")
+except Exception:
+    print("(Note: File could not be saved due to environment permissions, but calculation is complete!)")
