@@ -1,0 +1,27 @@
+def get_reply(user_message):
+    if user_message == "hello" or user_message == "hi":
+        return "Hi there!"
+    elif user_message == "how are you":
+        return "I'm fine, thanks!"
+    elif user_message == "what is your name":
+        return "I am a simple Python bot."
+    elif user_message == "who made you":
+        return "I was created by a beginner programmer."
+    elif user_message == "tell me a joke":
+        return "Why do programmers prefer dark mode? Because light attracts bugs!"
+    elif user_message == "what can you do":
+        return "I can answer simple questions."
+    elif user_message == "bye":
+        return "Goodbye!"
+    else:
+        return "I don't understand."
+
+print("Chatbot started! (type 'bye' to quit)")
+
+while True:
+    message = input("You: ").lower()
+    reply = get_reply(message)
+    print("Bot: " + reply)
+    
+    if message == "bye":
+        break
